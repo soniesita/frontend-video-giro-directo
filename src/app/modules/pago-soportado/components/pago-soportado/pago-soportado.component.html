@@ -48,7 +48,7 @@
         <th mat-header-cell *matHeaderCellDef>Acciones</th>
         <td mat-cell *matCellDef="let element; let i=index;">
 
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="edit(element.id, element.nit, element.razonSocial, element.valorPosiblePago)">
             <mat-icon aria-label="Edit">edit</mat-icon>
           </button>
           <button mat-icon-button color="accent">

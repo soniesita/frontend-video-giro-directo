@@ -73,7 +73,23 @@ export class PagoSoportadoComponent implements OnInit {
         this.openSnackBar("Pago agregado","Exitosa");
         this.getPagoSoportado();
       } else if (result==2){
-        this.openSnackBar("Se produjo un error al guardar el neuvo pago","Error");
+        this.openSnackBar("Se produjo un error al guardar el nuevo pago","Error");
+      }
+    });
+  }
+
+  edit(id:number, nit: string, razonSocial: string, valorPosiblePago: number){
+    const dialogRef = this.dialog.open( NewPagoSoportadoComponent, {
+      data: {id: id, nit: nit, razonSocial: razonSocial, valorPosiblePago: valorPosiblePago}
+
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if (result==1) {
+        this.openSnackBar("Pago actualizado","Exitosa");
+        this.getPagoSoportado();
+      } else if (result==2){
+        this.openSnackBar("Se produjo un error al editar el nuevo pago","Error");
       }
     });
   }

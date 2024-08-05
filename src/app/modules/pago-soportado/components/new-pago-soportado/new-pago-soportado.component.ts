@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PagoSoportadoService } from '../../../shared/services/pago-soportado.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-new-pago-soportado',
@@ -10,20 +10,26 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class NewPagoSoportadoComponent implements OnInit{
 
-  public pagoSoportadoForm!: FormGroup;
-  constructor(private fb: FormBuilder , private pagoSoportadoService: PagoSoportadoService , private dialogRef: MatDialogRef<NewPagoSoportadoComponent>){
-
-
-    this.pagoSoportadoForm = this.fb.group({
-          nit: ['',Validators.required],
-          razonSocial: ['',Validators.required],
-          valorPosiblePago: ['',Validators.required]
-    });
-  }
+    public pagoSoportadoForm!: FormGroup;
+    private fb = inject(FormBuilder);
+    private pagoSoportadoService = inject(PagoSoportadoService);
+    private dialogRef = inject(MatDialogRef);
+    public data = inject(MAT_DIALOG_DATA);
 
 
   ngOnInit(): void {
 
+    console.log(this.data ,'data ');
+
+    this.pagoSoportadoForm = this.fb.group({
+              nit: ['',Validators.required],
+              razonSocial: ['',Validators.required],
+              valorPosiblePago: ['',Validators.required]
+        });
+
+        if(this.data != null){
+          this.updateForm(this.data);
+        }
   }
   onSave() {
 
@@ -33,15 +39,34 @@ export class NewPagoSoportadoComponent implements OnInit{
       valorPosiblePago: this.pagoSoportadoForm.get('valorPosiblePago')?.value
     }
 
-    this.pagoSoportadoService.savePagoSoportado(data).subscribe(data => {
-      console.log(data);
-      this.dialogRef.close(1)
-    }, (error: any)=> {
-      this.dialogRef.close(2);
-    })
+    if (this.data != null) {
+      //update
+      this.pagoSoportadoService.updatePagoSoportado(data, this.data.id).subscribe( (data:any) => {
+        this.dialogRef.close(1);
+      }, (error: any)=>{
+        this.dialogRef.close(2);
+      })
+
+    } else {
+      //create
+      this.pagoSoportadoService.savePagoSoportado(data).subscribe((data : any) => {
+        console.log(data);
+        this.dialogRef.close(1);
+      }, (error: any)=> {
+        this.dialogRef.close(2);
+      })
+    }
   }
   onCancel() {
     this.dialogRef.close(3);
+  }
+
+  updateForm(data: any){
+    this.pagoSoportadoForm = this.fb.group({
+      nit: [data.nit, Validators.required],
+      razonSocial: [data.razonSocial, Validators.required],
+      valorPosiblePago: [data.valorPosiblePago, Validators.required],
+    });
   }
 
 }
