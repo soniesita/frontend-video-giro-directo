@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>Agregar nuevo pago</h2>
+<mat-dialog-content>
+  <form [formGroup]="pagoSoportadoForm">
+    <div class="category-container">
+      <mat-form-field>
+        <input matInput placeholder="Nit" formControlName="nit" required="">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Razon Social" formControlName="razonSocial" required="">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Pago Soportado" formControlName="valorPosiblePago" required="">
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="primary" (click)="onSave()" [disabled]="pagoSoportadoForm.invalid">
+    <mat-icon>save</mat-icon> Guardar
+  </button>
+  <button mat-button color="primary" (click)="onCancel()">
+    <mat-icon>cancel</mat-icon> Cancelar
+  </button>
+</mat-dialog-actions>
