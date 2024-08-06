@@ -26,4 +26,8 @@ export class PagoSoportadoService {
     const endpoint =`${base_url}/pago-soportado-factura/ ${id}`;
     return this.http.put(endpoint, body);
   }
+  deletePagoSoportado(id: any){
+    const endpoint =`${base_url}/pago-soportado-factura/ ${id}`;
+    return this.http.delete(endpoint);
+  }
 }

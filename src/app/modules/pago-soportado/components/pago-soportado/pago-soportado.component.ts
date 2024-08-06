@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { NewPagoSoportadoComponent } from '../new-pago-soportado/new-pago-soportado.component';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { ConfirmComponent } from '../../../shared/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-pago-soportado',
@@ -80,6 +81,7 @@ export class PagoSoportadoComponent implements OnInit {
 
   edit(id:number, nit: string, razonSocial: string, valorPosiblePago: number){
     const dialogRef = this.dialog.open( NewPagoSoportadoComponent, {
+      width:'450px',
       data: {id: id, nit: nit, razonSocial: razonSocial, valorPosiblePago: valorPosiblePago}
 
     });
@@ -89,7 +91,24 @@ export class PagoSoportadoComponent implements OnInit {
         this.openSnackBar("Pago actualizado","Exitosa");
         this.getPagoSoportado();
       } else if (result==2){
-        this.openSnackBar("Se produjo un error al editar el nuevo pago","Error");
+        this.openSnackBar("Se produjo un error al editar el pago","Error");
+      }
+    });
+  }
+
+  delete(id: any){
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+    data: {id: id}
+
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+
+      if (result == 1) {
+        this.openSnackBar("Pago eliminado","Exitosa");
+        this.getPagoSoportado();
+      } else if (result == 2){
+        this.openSnackBar("Se produjo un error al eliminar el pago","Error");
       }
     });
   }

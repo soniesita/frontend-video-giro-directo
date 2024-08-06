@@ -15,12 +15,13 @@ export class NewPagoSoportadoComponent implements OnInit{
     private pagoSoportadoService = inject(PagoSoportadoService);
     private dialogRef = inject(MatDialogRef);
     public data = inject(MAT_DIALOG_DATA);
+    estadoFormulario: string ="";
 
 
   ngOnInit(): void {
 
     console.log(this.data ,'data ');
-
+    this.estadoFormulario = "Agregar";
     this.pagoSoportadoForm = this.fb.group({
               nit: ['',Validators.required],
               razonSocial: ['',Validators.required],
@@ -29,6 +30,7 @@ export class NewPagoSoportadoComponent implements OnInit{
 
         if(this.data != null){
           this.updateForm(this.data);
+          this,this.estadoFormulario = "Actualizar"
         }
   }
   onSave() {
@@ -65,7 +67,7 @@ export class NewPagoSoportadoComponent implements OnInit{
     this.pagoSoportadoForm = this.fb.group({
       nit: [data.nit, Validators.required],
       razonSocial: [data.razonSocial, Validators.required],
-      valorPosiblePago: [data.valorPosiblePago, Validators.required],
+      valorPosiblePago: [data.valorPosiblePago, Validators.required]
     });
   }
 
